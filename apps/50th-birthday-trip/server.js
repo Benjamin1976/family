@@ -3,9 +3,9 @@ const fs=require('fs');
 const path=require('path');
 const port=process.env.PORT||3000;
 const root=path.join(__dirname,'public');
-const mime={'.html':'text/html; charset=utf-8','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.ico':'image/x-icon'};
+const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'application/javascript; charset=utf-8','.svg':'image/svg+xml','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.ico':'image/x-icon'};
 
-const VERSION='20260830d';
+const VERSION='20260830e';
 
 const carouselCss=`
 #compare .grid3.carousel-ready{display:block;max-width:760px;margin:32px auto 0;position:relative}
@@ -116,11 +116,12 @@ const carouselJs=`
 
 function enhanceIndex(html){
   html=html.replace('</style>',carouselCss+'</style>');
+  html=html.replace('</head>',`<link rel="stylesheet" href="details.css?v=${VERSION}"></head>`);
   html=html.replaceAll('assets/cover.svg',`assets/cover.svg?v=${VERSION}`)
            .replaceAll('assets/bali.svg',`assets/bali.svg?v=${VERSION}`)
            .replaceAll('assets/fiji.svg',`assets/fiji.svg?v=${VERSION}`)
            .replaceAll('assets/phuket.svg',`assets/phuket.svg?v=${VERSION}`);
-  html=html.replace('</body>',carouselJs+'</body>');
+  html=html.replace('</body>',carouselJs+`<script src="details.js?v=${VERSION}"></script></body>`);
   return html;
 }
 
